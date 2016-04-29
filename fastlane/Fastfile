@@ -1,0 +1,27 @@
+######################### PRIVATE LANES #########################
+private_lane :fabric do |options|
+    # Get parameters
+    configuration = options[:configuration]
+    environment = options[:environment]
+    groups = options[:groups]
+
+    # Ensure that there are no changes in the branch
+    ensure_git_status_clean
+
+    # Update the app's icon to have the version and build
+    build = get_build_number
+    version = get_version_number
+    badge(shield: "#{environment}-V#{version}(#{build})-blue")
+
+    # Build and package the app
+    gym(configuration: configuration)
+
+    # Upload to crashlytics
+    crashlytics(notes: environment.upcase, groups: groups)
+
+    # Clean the repo to remove the modified icons with the version and build
+    reset_git_repo(skip_clean: true, force: true)
+
+    # Notify in slack that the release is ready
+    slack(message: "Release in #{environment} environment uploaded to Fabric")
+end
