@@ -1,12 +1,21 @@
+
+############################ BEFORE ############################
+before_all do
+    # Ensure that there are no changes in the branch
+    ensure_git_status_clean
+end
+
 ######################### PRIVATE LANES #########################
+# This lane creates new builds and uploads them to Fabric
+# It needs 3 variales which are:
+# - configuration: This is the configuration you have configured in your Xcode project, e.g., Release, AdHoc, etc.
+# - environment: This is the environment that the app is using, e.g., Development, Test, Production.
+# - groups: This are the names of the groups in Fabric to which you want to send the build, e.g., Kogi.
 private_lane :fabric do |options|
     # Get parameters
     configuration = options[:configuration]
     environment = options[:environment]
     groups = options[:groups]
-
-    # Ensure that there are no changes in the branch
-    ensure_git_status_clean
 
     # Update the app's icon to have the version and build
     build = get_build_number
@@ -19,9 +28,23 @@ private_lane :fabric do |options|
     # Upload to crashlytics
     crashlytics(notes: environment.upcase, groups: groups)
 
+    # Notify in slack that the release is ready
+    slack(message: "Release in #{environment} environment uploaded to Fabric")
+end
+
+############################ AFTER ############################
+after_all do |lane|
     # Clean the repo to remove the modified icons with the version and build
     reset_git_repo(skip_clean: true, force: true)
 
-    # Notify in slack that the release is ready
-    slack(message: "Release in #{environment} environment uploaded to Fabric")
+    # Mac OS X Notification
+    notification(message: "Fastlane finished '#{lane}'")
+end
+
+error do |lane, exception|
+    # Clean the repo to remove the modified icons with the version and build
+    reset_git_repo(skip_clean: true, force: true)
+    
+    # Mac OS X Notification
+    notification(message: "Fastlane error in lane '#{lane}'")
 end
