@@ -76,6 +76,16 @@ fastlane/README.md 	# This file is re-generated each time you run fastlane so we
 
 ## Usage
 
+### Increment build
+
+To increment the build number of the app and commit the build bump all you need to do is run in the `Terminal` the following command:
+
+```
+fastlane increment_build
+```
+
+### Create and upload new build
+
 To send a new build of the app just run the following line in the `Terminal` changing `environment` for the environment you need
 
 ```

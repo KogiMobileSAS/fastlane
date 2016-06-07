@@ -5,6 +5,15 @@ before_all do
     ensure_git_status_clean
 end
 
+######################### PUBLIC LANES #########################
+desc "Increment the build number and commit the build bump"
+lane :increment_build do
+    increment_build_number
+    version = get_version_number
+    build = get_build_number
+    commit_version_bump(message: "Build bump: Version: #{version}, Build: #{build}")
+end
+
 ######################### PRIVATE LANES #########################
 # This lane creates new builds and uploads them to Fabric
 # It needs 3 variales which are:
