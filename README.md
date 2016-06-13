@@ -84,6 +84,8 @@ To increment the build number of the app and commit the build bump all you need 
 fastlane increment_build
 ```
 
+Optionally you can pass any of the parameters that [`increment_build_number`](https://github.com/fastlane/fastlane/blob/master/fastlane/docs/Actions.md#increment_build_number) receives.
+
 ### Increment version
 
 To increment the version number of the app and commit the version bump all you need to do is run in the `Terminal` the following command:
