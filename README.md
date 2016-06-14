@@ -55,7 +55,7 @@ You will also need to create a `Gymfile` which will contain some information nee
 
 ```ruby
 scheme "AppScheme"
-export_method "ad-hoc" # Use ad-hoc or development depending on the provisioning profile you'll be using
+export_method "ad-hoc" # Use ad-hoc, enterprise or development depending on the provisioning profile you'll be using
 clean true
 ```
 
