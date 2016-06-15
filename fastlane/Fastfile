@@ -6,32 +6,34 @@ before_all do
 end
 
 ######################### PUBLIC LANES #########################
-desc "Increment the build number and commit the build bump"
-lane :increment_build do |options|
-    # Get parameters
-    build_number = options[:build_number]
-    xcodeproj = options[:xcodeproj]
-    # Increment build
-    increment_build_number(build_number: build_number, xcodeproj: xcodeproj)
-    # Commit the build bump
-    version = get_version_number
-    build = get_build_number
-    commit_version_bump(message: "Build bump: Version: #{version}, Build: #{build}")
-end
+platform :ios do
+	desc "Increment the build number and commit the build bump"
+	lane :increment_build do |options|
+	    # Get parameters
+	    build_number = options[:build_number]
+	    xcodeproj = options[:xcodeproj]
+	    # Increment build
+	    increment_build_number(build_number: build_number, xcodeproj: xcodeproj)
+	    # Commit the build bump
+	    version = get_version_number
+	    build = get_build_number
+	    commit_version_bump(message: "Build bump: Version: #{version}, Build: #{build}")
+	end
 
-desc "Increment the version number, reset the build number and commit the version bump"
-lane :increment_version do |options|
-    # Get parameters
-    bump_type = options[:bump_type]
-    version_number = options[:version_number]
-    xcodeproj = options[:xcodeproj]
-    # Increment version and reset build
-    increment_version_number(bump_type: bump_type, version_number: version_number, xcodeproj: xcodeproj)
-    increment_build_number(build_number: 1)
-    # Commit the version bump
-    version = get_version_number
-    build = get_build_number
-    commit_version_bump(message: "Version bump: Version: #{version}, Build: #{build}")
+	desc "Increment the version number, reset the build number and commit the version bump"
+	lane :increment_version do |options|
+	    # Get parameters
+	    bump_type = options[:bump_type]
+	    version_number = options[:version_number]
+	    xcodeproj = options[:xcodeproj]
+	    # Increment version and reset build
+	    increment_version_number(bump_type: bump_type, version_number: version_number, xcodeproj: xcodeproj)
+	    increment_build_number(build_number: 1)
+	    # Commit the version bump
+	    version = get_version_number
+	    build = get_build_number
+	    commit_version_bump(message: "Version bump: Version: #{version}, Build: #{build}")
+	end
 end
 
 ######################### PRIVATE LANES #########################
