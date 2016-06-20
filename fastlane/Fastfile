@@ -1,8 +1,13 @@
 
 ############################ BEFORE ############################
 before_all do
-    # Ensure that there are no changes in the branch
-    ensure_git_status_clean
+    begin
+    	# Ensure that there are no changes in the branch
+    	ensure_git_status_clean
+    rescue
+    	# In case the repository is not clean, raise an exception to which we can compare in the error lane
+    	UI.user_error!("Git repository is dirty")
+    end
 end
 
 ######################### PUBLIC LANES #########################
@@ -73,8 +78,11 @@ after_all do |lane|
 end
 
 error do |lane, exception|
-    # Clean the repo to remove the modified icons with the version and build
-    reset_git_repo(skip_clean: true, force: true)
+	# Check that the exeption is not because the git repository is dirty so we don't delete the changes that we forgot to commit
+    if exception.message != "Git repository is dirty"
+    	# Clean the repo to remove the modified icons with the version and build
+    	reset_git_repo(skip_clean: true, force: true)
+    end
     
     # Mac OS X Notification
     notification(message: "Fastlane error in lane '#{lane}'")
