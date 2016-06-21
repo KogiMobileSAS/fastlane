@@ -65,6 +65,12 @@ You need a file called `.env` in your `fastlane` folder that will contain some v
 
 **NOTE:** The `.env` file should not be uploaded to the repository as it contains sensitive information like the Slack webhook url.
 
+### Automating Version and Build Numbers
+
+In your `FastFile` you will notice that are two lanes to increment Version and Build Numbers, in order to this lanes to works check the project configuration (Build Settings ---> Versioning), use Apple Generic for your Versioning System . 
+
+**NOTE:** you can check [here](https://developer.apple.com/library/mac/qa/qa1827/_index.html) an official resource from Apple documentation .
+
 ### Gitignore
 
 Add the lines that `fastlane` recomments, you can find them [here](https://github.com/fastlane/fastlane/blob/master/fastlane/docs/Gitignore.md). Additionally add the following lines:
