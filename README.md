@@ -67,6 +67,7 @@ You will also need to create a `Gymfile` which will contain some information nee
 scheme "AppScheme"
 export_method "ad-hoc" # Use ad-hoc, enterprise or development depending on the provisioning profile you'll be using
 clean true
+use_legacy_build_api true
 ```
 
 ### Environment Variables
