@@ -36,17 +36,27 @@ And the following under your platform:
 ```ruby
 desc "Create a new build in test environment, upload it to Fabric and send it to Kogi group"
 lane :development do
-	fabric(configuration: "AdHoc", environment: "Test", groups: ['Kogi'])
+    fabric(configuration: "AdHoc", environment: "Test", groups: ['Kogi'])
 end
 
 desc "Create a new build in test environment, upload it to Fabric and send it to the client and Kogi groups"
 lane :testing do
-	fabric(configuration: "AdHoc", environment: "Test", groups: ['ClientGroup', 'Kogi'])
+    fabric(configuration: "AdHoc", environment: "Test", groups: ['ClientGroup', 'Kogi'])
+end
+
+desc "Create a new build in production environment, upload it to TestFlight (Only upload the build, THIS LANE DON'T DO THE SUBMISSION)"
+lane :uploadtestflight do
+    itunesconnect(configuration: "AdHoc", environment: "Test")
+end
+
+desc "Create a new build in production environment, upload it to iTunes Connect (Only upload the build, THIS LANE DON'T DO THE SUBMISSION)"
+lane :uploadtostore do
+    itunesconnect(configuration: "Release", environment: "Production")
 end
 
 desc "Create a new build in production environment, upload it to Fabric and send it to the client and Kogi groups"
 lane :production do
-	fabric(configuration: "Release", environment: "Production", groups: ['ClientGroup', 'Kogi'])
+    fabric(configuration: "Release", environment: "Production", groups: ['ClientGroup', 'Kogi'])
 end
 ```
 ### Gym
@@ -78,6 +88,14 @@ Add the lines that `fastlane` recomments, you can find them [here](https://githu
 ```
 fastlane/.env 		# The file with the environment variables
 fastlane/README.md 	# This file is re-generated each time you run fastlane so we don't need to store it on the repository
+```
+
+### TestFlight
+
+If the project use TestFlight for beta distributions, you need to take extra care with the provisioning and code signing options in the xcode project, and additionally add the following lines to the AppFile in your project (you can find this file on your fastlane folder):
+
+```
+itc_team_name "XXXXXX" #Paste Here your Development Team Name 
 ```
 
 ## Usage

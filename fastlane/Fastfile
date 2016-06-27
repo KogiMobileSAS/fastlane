@@ -2,43 +2,43 @@
 ############################ BEFORE ############################
 before_all do
     begin
-    	# Ensure that there are no changes in the branch
-    	ensure_git_status_clean
+      # Ensure that there are no changes in the branch
+      #ensure_git_status_clean
     rescue
-    	# In case the repository is not clean, raise an exception to which we can compare in the error lane
-    	UI.user_error!("Git repository is dirty")
+      # In case the repository is not clean, raise an exception to which we can compare in the error lane
+      UI.user_error!("Git repository is dirty")
     end
 end
 
 ######################### PUBLIC LANES #########################
 platform :ios do
-	desc "Increment the build number and commit the build bump"
-	lane :increment_build do |options|
-	    # Get parameters
-	    build_number = options[:build_number]
-	    xcodeproj = options[:xcodeproj]
-	    # Increment build
-	    increment_build_number(build_number: build_number, xcodeproj: xcodeproj)
-	    # Commit the build bump
-	    version = get_version_number
-	    build = get_build_number
-	    commit_version_bump(message: "Build bump: Version: #{version}, Build: #{build}")
-	end
+  desc "Increment the build number and commit the build bump"
+  lane :increment_build do |options|
+      # Get parameters
+      build_number = options[:build_number]
+      xcodeproj = options[:xcodeproj]
+      # Increment build
+      increment_build_number(build_number: build_number, xcodeproj: xcodeproj)
+      # Commit the build bump
+      version = get_version_number
+      build = get_build_number
+      commit_version_bump(message: "Build bump: Version: #{version}, Build: #{build}")
+  end
 
-	desc "Increment the version number, reset the build number and commit the version bump"
-	lane :increment_version do |options|
-	    # Get parameters
-	    bump_type = options[:bump_type]
-	    version_number = options[:version_number]
-	    xcodeproj = options[:xcodeproj]
-	    # Increment version and reset build
-	    increment_version_number(bump_type: bump_type, version_number: version_number, xcodeproj: xcodeproj)
-	    increment_build_number(build_number: 1)
-	    # Commit the version bump
-	    version = get_version_number
-	    build = get_build_number
-	    commit_version_bump(message: "Version bump: Version: #{version}, Build: #{build}")
-	end
+  desc "Increment the version number, reset the build number and commit the version bump"
+  lane :increment_version do |options|
+      # Get parameters
+      bump_type = options[:bump_type]
+      version_number = options[:version_number]
+      xcodeproj = options[:xcodeproj]
+      # Increment version and reset build
+      increment_version_number(bump_type: bump_type, version_number: version_number, xcodeproj: xcodeproj)
+      increment_build_number(build_number: 1)
+      # Commit the version bump
+      version = get_version_number
+      build = get_build_number
+      commit_version_bump(message: "Version bump: Version: #{version}, Build: #{build}")
+  end
 end
 
 ######################### PRIVATE LANES #########################
@@ -68,6 +68,30 @@ private_lane :fabric do |options|
     slack(message: "Release in #{environment} environment uploaded to Fabric")
 end
 
+# This lane creates new builds and uploads them to TestFlight
+# It needs 2 variales which are:
+# - configuration: This is the configuration you have configured in your Xcode project, e.g., Release, AdHoc, etc.
+# - environment: This is the environment that the app is using, e.g., Development, Test, Production.
+private_lane :itunesconnect do |options|
+    # Get parameters
+    configuration = options[:configuration]
+    environment = options[:environment]
+
+    # Update the app's icon to have the version and build
+    build = get_build_number
+    version = get_version_number
+    badge(shield: "#{environment}-V#{version}(#{build})-blue")
+
+    # Build and package the app
+    gym(configuration: configuration)
+
+    # Upload to TestFlight
+    pilot(skip_submission: true,skip_waiting_for_build_processing:true)
+    
+    # Notify in slack that the release is ready
+    slack(message: "Release in #{environment} environment uploaded to TestFlight")
+end
+
 ############################ AFTER ############################
 after_all do |lane|
     # Clean the repo to remove the modified icons with the version and build
@@ -78,12 +102,11 @@ after_all do |lane|
 end
 
 error do |lane, exception|
-	# Check that the exeption is not because the git repository is dirty so we don't delete the changes that we forgot to commit
+  # Check that the exeption is not because the git repository is dirty so we don't delete the changes that we forgot to commit
     if exception.message != "Git repository is dirty"
-    	# Clean the repo to remove the modified icons with the version and build
-    	reset_git_repo(skip_clean: true, force: true)
+      # Clean the repo to remove the modified icons with the version and build
+      reset_git_repo(skip_clean: true, force: true)
     end
-    
     # Mac OS X Notification
     notification(message: "Fastlane error in lane '#{lane}'")
 end
