@@ -1,44 +1,44 @@
 
 ############################ BEFORE ############################
 before_all do
-    begin
-      # Ensure that there are no changes in the branch
-      ensure_git_status_clean
-    rescue
-      # In case the repository is not clean, raise an exception to which we can compare in the error lane
-      UI.user_error!("Git repository is dirty")
-    end
+	begin
+	    # Ensure that there are no changes in the branch
+	    ensure_git_status_clean
+	rescue
+	    # In case the repository is not clean, raise an exception to which we can compare in the error lane
+	    UI.user_error!("Git repository is dirty")
+  	end
 end
 
 ######################### PUBLIC LANES #########################
 platform :ios do
-  desc "Increment the build number and commit the build bump"
-  lane :increment_build do |options|
-      # Get parameters
-      build_number = options[:build_number]
-      xcodeproj = options[:xcodeproj]
-      # Increment build
-      increment_build_number(build_number: build_number, xcodeproj: xcodeproj)
-      # Commit the build bump
-      version = get_version_number
-      build = get_build_number
-      commit_version_bump(message: "Build bump: Version: #{version}, Build: #{build}")
-  end
+	desc "Increment the build number and commit the build bump"
+	lane :increment_build do |options|
+		# Get parameters
+		build_number = options[:build_number]
+		xcodeproj = options[:xcodeproj]
+		# Increment build
+		increment_build_number(build_number: build_number, xcodeproj: xcodeproj)
+		# Commit the build bump
+		version = get_version_number
+		build = get_build_number
+		commit_version_bump(message: "Build bump: Version: #{version}, Build: #{build}")
+	end
 
-  desc "Increment the version number, reset the build number and commit the version bump"
-  lane :increment_version do |options|
-      # Get parameters
-      bump_type = options[:bump_type]
-      version_number = options[:version_number]
-      xcodeproj = options[:xcodeproj]
-      # Increment version and reset build
-      increment_version_number(bump_type: bump_type, version_number: version_number, xcodeproj: xcodeproj)
-      increment_build_number(build_number: 1)
-      # Commit the version bump
-      version = get_version_number
-      build = get_build_number
-      commit_version_bump(message: "Version bump: Version: #{version}, Build: #{build}")
-  end
+	desc "Increment the version number, reset the build number and commit the version bump"
+	lane :increment_version do |options|
+		# Get parameters
+		bump_type = options[:bump_type]
+		version_number = options[:version_number]
+		xcodeproj = options[:xcodeproj]
+		# Increment version and reset build
+		increment_version_number(bump_type: bump_type, version_number: version_number, xcodeproj: xcodeproj)
+		increment_build_number(build_number: 1)
+		# Commit the version bump
+		version = get_version_number
+		build = get_build_number
+		commit_version_bump(message: "Version bump: Version: #{version}, Build: #{build}")
+	end
 end
 
 ######################### PRIVATE LANES #########################
@@ -102,11 +102,11 @@ after_all do |lane|
 end
 
 error do |lane, exception|
-  # Check that the exeption is not because the git repository is dirty so we don't delete the changes that we forgot to commit
-    if exception.message != "Git repository is dirty"
-      # Clean the repo to remove the modified icons with the version and build
-      reset_git_repo(skip_clean: true, force: true)
-    end
+	# Check that the exeption is not because the git repository is dirty so we don't delete the changes that we forgot to commit
+	if exception.message != "Git repository is dirty"
+	    # Clean the repo to remove the modified icons with the version and build
+	    reset_git_repo(skip_clean: true, force: true)
+  	end
     # Mac OS X Notification
     notification(message: "Fastlane error in lane '#{lane}'")
 end
