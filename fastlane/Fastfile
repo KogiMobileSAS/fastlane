@@ -39,6 +39,18 @@ platform :ios do
 		build = get_build_number
 		commit_version_bump(message: "Version bump: Version: #{version}, Build: #{build}")
 	end
+
+	desc "Creates a new build, uploads it to iTunes Connect and sends a notification after the upload and when iTunes Connect finishes processing the build"
+  	lane :store_upload do
+	    # Build and package the app
+	    gym(configuration: "Release", export_method: "app-store")
+	    # Upload to TestFlight
+	    pilot(skip_submission: true, skip_waiting_for_build_processing: true)
+	    slack(message: "Release uploaded to iTunes Connect. We'll let you know when the build is processed.")
+	    # Wait for iTunes Connect to finish processing the build
+	    sh "watchbuild"
+	    slack(message: "iTunes Connect finished processing the build. Review everything and submit it on itunesconnect.apple.com")
+	end
 end
 
 ######################### PRIVATE LANES #########################
