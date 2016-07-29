@@ -14,6 +14,7 @@ You will also need to install the `badge` gem and `graphicsmagick` which are use
 
 ```
 sudo gem install badge
+sudo gem install watchbuild
 brew install graphicsmagick
 ```
 
