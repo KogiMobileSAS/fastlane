@@ -129,3 +129,10 @@ To send a new build of the app just run the following line in the `Terminal` cha
 ```
 fastlane environment
 ```
+### Multiples Xcode Versions 
+In some cases we all have multiples version of Xcode so for supporting that please add this to `FastFile`. Also notice that Kogi iOS Team have a convention for naming the Xcode. Always keep the latest version as "Xcode" and the others XcodeX.Y
+```
+xcversion(version: "8.2") # Selects Xcode 8.2
+xcode_select "/Applications/Xcode.app"
+#xcode_select "/Applications/Xcode 7.3.1.app"
+```
