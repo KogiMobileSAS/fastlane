@@ -22,7 +22,7 @@ platform :ios do
 		# Commit the build bump
 		version = get_version_number(xcodeproj: xcodeproj)
 		build = get_build_number(xcodeproj: xcodeproj)
-		commit_version_bump(message: "Build bump: Version: #{version}, Build: #{build}")
+		commit_version_bump(message: "Build bump: Version: #{version}, Build: #{build}",xcodeproj: xcodeproj)
 	end
 
 	desc "Increment the version number, reset the build number and commit the version bump"
@@ -37,7 +37,7 @@ platform :ios do
 		# Commit the version bump
 		version = get_version_number(xcodeproj: xcodeproj)
 		build = get_build_number(xcodeproj: xcodeproj)
-		commit_version_bump(message: "Version bump: Version: #{version}, Build: #{build}")
+		commit_version_bump(message: "Version bump: Version: #{version}, Build: #{build}",xcodeproj: xcodeproj)
 	end
 
 	desc "Creates a new build, uploads it to iTunes Connect and sends a notification after the upload and when iTunes Connect finishes processing the build"
