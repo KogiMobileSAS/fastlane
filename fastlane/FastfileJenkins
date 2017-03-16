@@ -2,7 +2,6 @@
 before_all do
 	begin
 	    # Ensure that there are no changes in the branch
-	    unlock_keychain
 	    ensure_git_status_clean
 	    cocoapods
 	rescue
