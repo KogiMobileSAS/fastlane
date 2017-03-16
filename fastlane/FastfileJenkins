@@ -60,9 +60,6 @@ end
 # - groups: This are the names of the groups in Fabric to which you want to send the build, e.g., Kogi.
 private_lane :fabric do |options|
     # Get parameters
-    if is_ci?
-      unlock_keychain
-    end
     configuration = options[:configuration]
     environment = options[:environment]
     groups = options[:groups]
