@@ -26,7 +26,7 @@ brew install graphicsmagick
 
 To start using `fastlane` run `fastlane init` in your project folder which will start an assistant and set up `fastlane`. For more information check the official [instructions](https://github.com/fastlane/fastlane#quick-start)
 
-After you have `fastlane` configured in your project add to the beggining of the `Fastfile` in the `fastlane` folder the following line:
+After you have `fastlane` configured in your project add to the beginning of the `Fastfile` in the `fastlane` folder the following line:
 
 ```ruby
 import_from_git(url: 'https://github.com/KogiMobileSAS/fastlane.git')
@@ -45,17 +45,17 @@ lane :testing do
     fabric(configuration: "AdHoc", environment: "Test", groups: ['ClientGroup', 'Kogi'])
 end
 
-desc "Create a new build in production environment, upload it to Fabric and send it to the client and Kogi groups"
+desc "Create a new build in the production environment, upload it to Fabric and send it to the client and Kogi groups"
 lane :production do
     fabric(configuration: "Release", environment: "Production", groups: ['ClientGroup', 'Kogi'])
 end
 
-desc "Create a new build in production environment, upload it to TestFlight (Only upload the build, THIS LANE DON'T DO THE SUBMISSION)"
+desc "Create a new build in the production environment, upload it to TestFlight (Only upload the build, THIS LANE DON'T DO THE SUBMISSION)"
 lane :uploadtestflight do
     itunesconnect(configuration: "AdHoc", environment: "Test")
 end
 
-desc "Create a new build in production environment, upload it to iTunes Connect (Only upload the build, THIS LANE DON'T DO THE SUBMISSION)"
+desc "Create a new build in the production environment, upload it to iTunes Connect (Only upload the build, THIS LANE DON'T DO THE SUBMISSION)"
 lane :uploadtostore do
     itunesconnect(configuration: "Release", environment: "Production")
 end
@@ -81,20 +81,20 @@ You need a file called `.env` in your `fastlane` folder that will contain some v
 
 In your `FastFile` you will notice that are two lanes to increment Version and Build Numbers, in order to this lanes to works check the project configuration (Build Settings ---> Versioning), use Apple Generic for your Versioning System . 
 
-**NOTE:** you can check [here](https://developer.apple.com/library/mac/qa/qa1827/_index.html) an official resource from Apple documentation .
+**NOTE:** you can check [here](https://developer.apple.com/library/mac/qa/qa1827/_index.html) an official resource from Apple documentation.
 
 ### Gitignore
 
-Add the lines that `fastlane` recomments, you can find them [here](https://github.com/fastlane/fastlane/blob/master/fastlane/docs/Gitignore.md). Additionally add the following lines:
+Add the lines that `fastlane` recommends, you can find them [here](https://github.com/fastlane/fastlane/blob/master/fastlane/docs/Gitignore.md). Additionally, add the following lines:
 
 ```
-fastlane/.env 		# The file with the environment variables
-fastlane/README.md 	# This file is re-generated each time you run fastlane so we don't need to store it on the repository
+fastlane/.env         # The file with the environment variables
+fastlane/README.md     # This file is re-generated each time you run fastlane so we don't need to store it in the repository
 ```
 
 ### TestFlight
 
-If the project use TestFlight for beta distributions, you need to take extra care with the provisioning and code signing options in the xcode project, if your apple developer account has multiples teams you need to add the following line to the AppFile in your project, this will tell fastlane which team use. (you can find this file on your fastlane folder):
+If the project uses TestFlight for beta distributions, you need to take extra care with the provisioning and code signing options in the Xcode project, if your apple developer account has multiples teams you need to add the following line to the AppFile in your project, this will tell fastlane which team use. (you can find this file on your fastlane folder):
 
 ```
 itc_team_name "XXXXXX" #Paste Here your Development Team Name 
@@ -117,7 +117,7 @@ Optionally you can pass any of the parameters that [`increment_build_number`](ht
 To increment the version number of the app and commit the version bump all you need to do is run in the `Terminal` the following command:
 
 ```
-fastlane increment_version_number	#The default bump_type is `patch`
+fastlane increment_version_number    #The default bump_type is `patch`
 ```
 
 Optionally you can pass any of the parameters that [`increment_version_number`](https://github.com/fastlane/fastlane/blob/master/fastlane/docs/Actions.md#increment_version_number) receives.
@@ -130,7 +130,7 @@ To send a new build of the app just run the following line in the `Terminal` cha
 fastlane environment
 ```
 ### Multiples Xcode Versions 
-In some cases we all have multiples version of Xcode so for supporting that please add this to `FastFile`. Also notice that Kogi iOS Team have a convention for naming the Xcode. Always keep the latest version as "Xcode" and the others XcodeX.Y
+In some cases, we all have multiples version of Xcode so for supporting that please add this to `FastFile`. Also, notice that Kogi iOS Team have a convention for naming the Xcode. Always keep the latest version as "Xcode" and the others XcodeX.Y
 ```
 xcversion(version: "8.2") # Selects Xcode 8.2
 xcode_select "/Applications/Xcode.app"
