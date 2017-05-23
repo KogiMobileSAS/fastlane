@@ -67,6 +67,7 @@ private_lane :fabric do |options|
     environment = options[:environment]
     groups = options[:groups]
     app_scheme = options[:scheme]
+    exportMethod = options[:export_method]
 
     # At this very moment Badge cannot be used in CI Random error on Jenkins
     # Update the app's icon to have the version and build
@@ -75,7 +76,7 @@ private_lane :fabric do |options|
     #badge(shield: "#{environment}-V#{version}(#{build})-blue")
 
     # Build and package the app
-    gym(scheme:app_scheme,configuration: configuration)
+    gym(scheme:app_scheme,configuration: configuration,export_method: exportMethod)
 
     # Upload to crashlytics
     crashlytics(notes: environment.upcase, groups: groups)
@@ -93,6 +94,7 @@ private_lane :itunesconnect do |options|
     configuration = options[:configuration]
     environment = options[:environment]
     app_scheme = options[:scheme]
+    exportMethod = options[:export_method]
 	
 	# At this very moment Badge cannot be used in CI Random error on Jenkins
     # Update the app's icon to have the version and build
@@ -101,7 +103,7 @@ private_lane :itunesconnect do |options|
     #badge(shield: "#{environment}-V#{version}(#{build})-blue")
 
     # Build and package the app
-    gym(scheme:app_scheme,configuration: configuration)
+    gym(scheme:app_scheme,configuration: configuration,export_method: exportMethod)
 
     # Upload to TestFlight
     pilot(skip_submission: true,skip_waiting_for_build_processing:true)
