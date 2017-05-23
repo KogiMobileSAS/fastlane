@@ -4,7 +4,6 @@ before_all do
 	    # Ensure that there are no changes in the branch
 	    ensure_git_status_clean
 	    cocoapods
-	    unlock_keychain
 	rescue
 	    # In case the repository is not clean, raise an exception to which we can compare in the error lane
 	    UI.user_error!("Git repository is dirty")
@@ -61,6 +60,9 @@ end
 # - groups: This are the names of the groups in Fabric to which you want to send the build, e.g., Kogi.
 private_lane :fabric do |options|
     # Get parameters
+    if is_ci?
+      unlock_keychain
+    end
     configuration = options[:configuration]
     environment = options[:environment]
     groups = options[:groups]
@@ -113,7 +115,7 @@ after_all do |lane|
     # Clean the repo to remove the modified icons with the version and build
     reset_git_repo(skip_clean: true, force: true)
     # Mac OS X Notification
-    notification(message: "Fastlane finished '#{lane}'")
+    #notification(message: "Fastlane finished '#{lane}'")
 end
 
 error do |lane, exception|
