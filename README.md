@@ -37,27 +37,32 @@ And the following under your platform:
 ```ruby
 desc "Create a new build in test environment, upload it to Fabric and send it to Kogi group"
 lane :development do
-    fabric(configuration: "AdHoc", environment: "Test", groups: ['Kogi'])
+    fabric(configuration: "AdHoc", environment: "Test", groups: ['Kogi'],export_method: "development")
 end
 
 desc "Create a new build in test environment, upload it to Fabric and send it to the client and Kogi groups"
 lane :testing do
-    fabric(configuration: "AdHoc", environment: "Test", groups: ['ClientGroup', 'Kogi'])
+    fabric(configuration: "AdHoc", environment: "Test", groups: ['ClientGroup', 'Kogi'],export_method: "ad-hoc")
+end
+
+desc "Create a new build in test environment, upload it to Fabric and send it to the client and Kogi groups with an enterprise account"
+lane :enterprise do
+    fabric(configuration: "AdHoc", environment: "Test", groups: ['ClientGroup', 'Kogi'],export_method: "enterprise")
 end
 
 desc "Create a new build in the production environment, upload it to Fabric and send it to the client and Kogi groups"
 lane :production do
-    fabric(configuration: "Release", environment: "Production", groups: ['ClientGroup', 'Kogi'])
+    fabric(configuration: "Release", environment: "Production", groups: ['ClientGroup', 'Kogi'],export_method: "ad-hoc")
 end
 
 desc "Create a new build in the production environment, upload it to TestFlight (Only upload the build, THIS LANE DON'T DO THE SUBMISSION)"
 lane :uploadtestflight do
-    itunesconnect(configuration: "AdHoc", environment: "Test")
+    itunesconnect(configuration: "AdHoc", environment: "Test",export_method: "ad-hoc")
 end
 
 desc "Create a new build in the production environment, upload it to iTunes Connect (Only upload the build, THIS LANE DON'T DO THE SUBMISSION)"
 lane :uploadtostore do
-    itunesconnect(configuration: "Release", environment: "Production")
+    itunesconnect(configuration: "Release", environment: "Production",export_method: "app-store")
 end
 ```
 ### Gym
@@ -68,7 +73,6 @@ You will also need to create a `Gymfile` which will contain some information nee
 scheme "AppScheme"
 export_method "ad-hoc" # Use ad-hoc, enterprise or development depending on the provisioning profile you'll be using
 clean true
-use_legacy_build_api true
 ```
 
 ### Environment Variables

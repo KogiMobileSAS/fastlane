@@ -64,6 +64,7 @@ private_lane :fabric do |options|
     configuration = options[:configuration]
     environment = options[:environment]
     groups = options[:groups]
+    exportMethod = options[:export_method]
 
     # Update the app's icon to have the version and build
     build = get_build_number
@@ -71,7 +72,7 @@ private_lane :fabric do |options|
     badge(shield: "#{environment}-V#{version}(#{build})-blue")
 
     # Build and package the app
-    gym(configuration: configuration)
+    gym(configuration: configuration,export_method: exportMethod)
 
     # Upload to crashlytics
     crashlytics(notes: environment.upcase, groups: groups)
@@ -88,6 +89,7 @@ private_lane :itunesconnect do |options|
     # Get parameters
     configuration = options[:configuration]
     environment = options[:environment]
+    exportMethod = options[:export_method]
 
     # Update the app's icon to have the version and build
     build = get_build_number
@@ -95,7 +97,7 @@ private_lane :itunesconnect do |options|
     badge(shield: "#{environment}-V#{version}(#{build})-blue")
 
     # Build and package the app
-    gym(configuration: configuration)
+    gym(configuration: configuration,export_method: exportMethod)
 
     # Upload to TestFlight
     pilot(skip_submission: true,skip_waiting_for_build_processing:true)
