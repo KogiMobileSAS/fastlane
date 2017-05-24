@@ -3,6 +3,7 @@ before_all do
 	begin
 	    # Ensure that there are no changes in the branch
 	    ensure_git_status_clean
+	    update_fastlane
 	    cocoapods
 	rescue
 	    # In case the repository is not clean, raise an exception to which we can compare in the error lane
