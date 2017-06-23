@@ -47,10 +47,8 @@ platform :ios do
 	    gym(scheme:app_scheme,configuration: "Release", export_method: "app-store")
 	    # Upload to TestFlight
 	    pilot(skip_submission: true, skip_waiting_for_build_processing: true)
-	    slack(message: "Release uploaded to iTunes Connect. We'll let you know when the build is processed.")
 	    # Wait for iTunes Connect to finish processing the build
 	    sh "watchbuild"
-	    slack(message: "iTunes Connect finished processing the build. Review everything and submit it on itunesconnect.apple.com")
 	end
 end
 ######################### PRIVATE LANES #########################
@@ -81,9 +79,6 @@ private_lane :fabric do |options|
 
     # Upload to crashlytics
     crashlytics(notes: environment.upcase, groups: groups)
-
-    # Notify in slack that the release is ready
-    slack(message: "Release in #{environment} environment uploaded to Fabric")
 end
 
 # This lane creates new builds and uploads them to TestFlight
@@ -108,9 +103,6 @@ private_lane :itunesconnect do |options|
 
     # Upload to TestFlight
     pilot(skip_submission: true,skip_waiting_for_build_processing:true)
-    
-    # Notify in slack that the release is ready
-    slack(message: "Release in #{environment} environment uploaded to TestFlight")
 end
 
 ############################ AFTER ############################
