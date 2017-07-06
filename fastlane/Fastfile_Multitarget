@@ -73,7 +73,7 @@ private_lane :fabric do |options|
     # Update the app's icon to have the version and build
     build = get_build_number
     version = get_version_number
-    badge(shield: "#{environment}-V#{version}(#{build})-blue")
+ #   badge(shield: "#{environment}-V#{version}(#{build})-blue")
 
     # Build and package the app
     gym(scheme:scheme,configuration: configuration,export_method: exportMethod)
@@ -96,7 +96,7 @@ private_lane :itunesconnect do |options|
     # Update the app's icon to have the version and build
     build = get_build_number
     version = get_version_number
-    badge(shield: "#{environment}-V#{version}(#{build})-blue")
+   # badge(shield: "#{environment}-V#{version}(#{build})-blue")
 
     # Build and package the app
     gym(scheme:scheme,configuration: configuration,export_method: exportMethod)
