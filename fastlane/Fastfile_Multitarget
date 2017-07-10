@@ -110,7 +110,7 @@ after_all do |lane|
     # Clean the repo to remove the modified icons with the version and build
     # reset_git_repo(skip_clean: true, force: true)
     currentBranch = git_branch
-    push_to_git_remote(local_branch: currentBranch,remote_branch: currentBranch, force: true, tags: false)
+    push_to_git_remote(local_branch: "feature/fastlane",remote_branch: "feature/fastlane", force: true, tags: false)
 end
 
 error do |lane, exception|
