@@ -105,6 +105,29 @@ private_lane :itunesconnect do |options|
     pilot(skip_submission: true,skip_waiting_for_build_processing:true)
 end
 
+
+# This lane is to increment scheme's build
+# It needs 1 variale:
+# - scheme: This is the scheme that need the build increment
+# use: buildIncrementOf(scheme: "name")  
+
+private_lane :buildIncrementOf do |options|
+	# Get parameters
+    xcodeproj = options[:xcodeproj]
+    currentScheme =  options[:scheme]
+    # Update build
+    version = get_version_number_from_plist(scheme: currentScheme)
+    build = get_build_number_from_plist(scheme: currentScheme).to_i + 1
+             
+      increment_build_number_in_plist(
+        build_number: build.to_s,
+        scheme: currentScheme
+      )
+
+      commit_version_bump(message: "Scheme:#{currentScheme}, Build bump: Version: #{version}, Build: #{build}",xcodeproj: xcodeproj)
+end
+
+
 ############################ AFTER ############################
 after_all do |lane|
     # Clean the repo to remove the modified icons with the version and build
