@@ -109,6 +109,7 @@ end
 after_all do |lane|
     # Clean the repo to remove the modified icons with the version and build
     # reset_git_repo(skip_clean: true, force: true)
+    push_to_git_remote(force: true, tags: false)
 end
 
 error do |lane, exception|
