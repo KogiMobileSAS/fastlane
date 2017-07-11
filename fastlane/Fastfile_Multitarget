@@ -124,7 +124,7 @@ private_lane :buildIncrementOf do |options|
         scheme: currentScheme
       )
 
-      commit_version_bump(message: "Scheme:#{currentScheme}, Build bump: Version: #{version}, Build: #{build}",xcodeproj: xcodeproj)
+      commit_version_bump(message: "[chore]: Build increment #{currentScheme} Build bump: Version: #{version}, Build: #{build}",xcodeproj: xcodeproj)
 end
 
 
