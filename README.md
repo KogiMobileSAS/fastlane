@@ -104,7 +104,7 @@ clean true
 
 You need a file called `.env` in your `fastlane` folder that will contain some variables that the actions in the `Fastfile` need. You can use this [file](fastlane/example.env) as an example.
 
-**NOTE:** The `.env` file should not be uploaded to the repository as it contains sensitive information like the Slack webhook url.
+**NOTE:** The `.env` file should be uploaded to the repository.
 
 ### Automating Version and Build Numbers
 
