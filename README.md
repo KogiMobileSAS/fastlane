@@ -96,7 +96,6 @@ And the following under your platform:
 You will also need to create a `Gymfile` which will contain some information needed to build and package the app. Create the `Gymfile` running `gym init` and add the following to the file:
 
 ```ruby
-scheme "AppScheme"
 export_method "ad-hoc" # Use ad-hoc, enterprise or development depending on the provisioning profile you'll be using
 clean true
 ```
