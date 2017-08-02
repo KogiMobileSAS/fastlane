@@ -5,7 +5,9 @@ before_all do
 	    # Ensure that there are no changes in the branch
 	    ensure_git_status_clean
 	    #update_fastlane
+	    if is_ci?
 	    cocoapods
+    	    end
 	rescue
 	    # In case the repository is not clean, raise an exception to which we can compare in the error lane
 	    UI.user_error!("Git repository is dirty")
@@ -24,7 +26,7 @@ platform :ios do
 		# Commit the build bump
 		version = get_version_number
 		build = get_build_number
-		commit_version_bump(message: "Build bump: Version: #{version}, Build: #{build}")
+		commit_version_bump(message: "[chore]: Build bump: Version: #{version}, Build: #{build}")
 	end
 
 	desc "Increment the version number, reset the build number and commit the version bump"
@@ -39,7 +41,7 @@ platform :ios do
 		# Commit the version bump
 		version = get_version_number
 		build = get_build_number
-		commit_version_bump(message: "Version bump: Version: #{version}, Build: #{build}")
+		commit_version_bump(message: "[chore]: Version bump: Version: #{version}, Build: #{build}")
 	end
 
 	desc "Creates a new build, uploads it to iTunes Connect and sends a notification after the upload and when iTunes Connect finishes processing the build"
