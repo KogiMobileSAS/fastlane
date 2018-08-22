@@ -71,10 +71,11 @@ private_lane :fabric do |options|
     groups = options[:groups]
     scheme = options[:scheme]
     exportMethod = options[:export_method]
+    target = options[:target]
 
     # Update the app's icon to have the version and build
     build = get_build_number
-    version = get_version_number
+    version = get_version_number(target: target)
  #   badge(shield: "#{environment}-V#{version}(#{build})-blue")
 
     # Build and package the app
